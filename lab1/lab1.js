@@ -1,4 +1,7 @@
 const questionOne = function questionOne(arr) {
+    if(typeof arr === "undefined") {
+        return {}
+    }
     const isPrime = num => {
         for(let i = 2; i < num; i++) {
             if(num % i === 0) {
@@ -44,18 +47,18 @@ const questionThree = function questionThree(arr) {
     }
 
     const duplicates = findDuplicates(sortedArr)
-    const getAnagramLists = (duplicates, sortedArr) => {
+    const getAnagramLists = (duplicates, sortedArr, noDuplicates) => {
         let indicies = [[]]
         duplicates.forEach((elem1, indexInner) => {
-            sortedArr.forEach((elem2) => {
+            sortedArr.forEach((elem2, index) => {
                 if(elem1 === elem2) {
-                    indicies[indexInner].push(elem2)
+                    indicies[indexInner].push(noDuplicates[index])
                 }
             })
         })
         return indicies
     }
-    const anagramList = getAnagramLists(duplicates, sortedArr)
+    const anagramList = getAnagramLists(duplicates, sortedArr, noDuplicates)
 
     const buildAnagramsObject = (duplicates, anagramList) => {
         let anagrams = {}
