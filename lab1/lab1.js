@@ -48,8 +48,9 @@ const questionThree = function questionThree(arr) {
 
     const duplicates = findDuplicates(sortedArr)
     const getAnagramLists = (duplicates, sortedArr, noDuplicates) => {
-        let indicies = [[]]
+        let indicies = []
         duplicates.forEach((elem1, indexInner) => {
+            indicies[indexInner] = []
             sortedArr.forEach((elem2, index) => {
                 if(elem1 === elem2) {
                     indicies[indexInner].push(noDuplicates[index])
