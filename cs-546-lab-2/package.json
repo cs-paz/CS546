@@ -1,0 +1,12 @@
+{
+  "name": "cs-546-lab-2",
+  "version": "1.0.0",
+  "description": "My Lab 2 Module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christian Szablewski-Paz 10445108",
+  "license": "ISC"
+}
