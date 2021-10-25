@@ -2,6 +2,16 @@ const { restaurants } = require("../config/mongoCollections")
 const connection = require("../config/mongoConnection")
 const ObjectID = require("mongodb").ObjectID
 
+const validateDateString = (date) => {
+  const arr = [...date]
+  if(arr[2] != '/' || arr[5] != '/' || arr.length != 10) {
+    return false
+  }
+
+  return true
+}
+
+
 const create = async (
   restaurantId,
   title,
@@ -26,6 +36,10 @@ const create = async (
 
   if(typeof rating !== "number" || rating < 1 || rating > 5) {
     throw new Error('invalid rating')
+  }
+
+  if(!validateDateString(dateOfReview)) {
+    throw new Error('invalid date')
   }
 
   // check for date of Review

@@ -3,6 +3,14 @@ const router = express.Router();
 const { create, getAll, get, remove } = require('../data/reviews')
 const ObjectID = require("mongodb").ObjectID
 
+const validateDateString = (date) => {
+  const arr = [...date]
+  if(arr[2] != '/' || arr[5] != '/' || arr.length != 10) {
+    return false
+  }
+
+  return true
+}
 
 const validate = async (
   restaurantId,
@@ -23,6 +31,10 @@ const validate = async (
   }
 
   if(!ObjectID.isValid(restaurantId)) {
+    return false
+  }
+
+  if(!validateDateString(dateOfReview)) {
     return false
   }
 
@@ -49,7 +61,8 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/:id', async (req, res) => {
-  if(!validate(req.params.restaurantId, req.params.title, req.params.reviewer, req.params.rating, req.params.dateOfReview, req.params.review)) {
+  const data = req.body
+  if(!validate(data.restaurantId, data.title, data.reviewer, data.rating, data.dateOfReview, data.review)) {
     res.status(400).send()
   }
 
@@ -57,18 +70,19 @@ router.post('/:id', async (req, res) => {
     let restaurant = null
     try { 
       restaurant = await create(
-        req.params.restaurantId,
-        req.params.title,
-        req.params.reviewer,
-        req.params.rating,
-        req.params.dateOfReview,
-        req.params.review
+        data.restaurantId,
+        data.title,
+        data.reviewer,
+        data.rating,
+        data.dateOfReview,
+        data.review
       )
     }
     catch (e) {
       res.status(400).json({ message: 'not found!' });
     }
     res.json(restaurant);
+    res.status(200).send();
   } catch (e) {
     res.status(500).send();
   }
@@ -78,12 +92,12 @@ router.get('/review/:id', async (req, res) => {
   try {
     let review = null
     try { 
-      review = await get(req.params.reviewId); 
+      review = await get(req.params.id); 
     }
     catch (e) {
       res.status(404).json({ message: 'not found!' });
     }
-    res.json(restaurant);
+    res.json(review);
   } catch (e) {
     res.status(500).send();
   }
@@ -93,12 +107,12 @@ router.delete('/:id', async (req, res) => {
   try {
     let restaurant = null
     try { 
-      restaurant = await remove(req.params.reviewId); 
+      restaurant = await remove(req.params.id); 
     }
     catch (e) {
       res.status(404).json({ message: 'not found!' });
     }
-    res.json({reviewId: req.params.reviewId, deleted: true});
+    res.json({reviewId: req.params.id, deleted: true});
   } catch (e) {
     res.status(500).send();
   }

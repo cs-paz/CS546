@@ -99,21 +99,26 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  if(!validate(req.params.name , req.params.location , req.params.phoneNumber, req.params.website, req.params.priceRange, req.params.cuisines, req.params.serviceOptions)) {
+  console.log('req')
+  console.log([req])
+  const data = req.body
+
+  if(!validate(data.name , data.location , data.phoneNumber, data.website, data.priceRange, data.cuisines, data.serviceOptions)) {
     res.status(400).send();
   }
 
   try {
     const restaurant = await create(
-      req.params.name,
-      req.params.location, 
-      req.params.phoneNumber,
-      req.params.website,
-      req.params.priceRange,
-      req.params.cuisines,
-      req.params.serviceOptions
+      data.name,
+      data.location, 
+      data.phoneNumber,
+      data.website,
+      data.priceRange,
+      data.cuisines,
+      data.serviceOptions
     )
     res.json(restaurant);
+    res.status(200).send()
   }
   catch (e) {
     // Something went wrong with the server!
@@ -137,7 +142,9 @@ router.get('/:id', async (req, res) => {
 })
 
 router.put('/:id', async (req, res) => {
-  if(!req.params.id || !ObjectID.isValid(req.params.id) || !validate(req.params.name , req.params.location , req.params.phoneNumber, req.params.website, req.params.priceRange, req.params.cuisines, req.params.serviceOptions)) {
+  const data = req.body
+
+  if(!req.params.id || !ObjectID.isValid(req.params.id) || !validate(data.name , data.location , data.phoneNumber, data.website, data.priceRange, data.cuisines, data.serviceOptions)) {
     res.status(400).send();
   }
   // do more error checking for whole schema
@@ -146,19 +153,20 @@ router.put('/:id', async (req, res) => {
     let restaurant = null
     try {
       restaurant = await update(
-        req.params.id,
-        req.params.name,
-        req.params.location, 
-        req.params.phoneNumber,
-        req.params.website,
-        req.params.priceRange,
-        req.params.cuisines,
-        req.params.serviceOptions
+        data.id,
+        data.name,
+        data.location, 
+        data.phoneNumber,
+        data.website,
+        data.priceRange,
+        data.cuisines,
+        data.serviceOptions
       )
     } catch(e) {
       res.status(404).send();
     }
     res.json(restaurant)
+    res.status(200).send()
   }
   catch(e) {
     res.status(500).send();
