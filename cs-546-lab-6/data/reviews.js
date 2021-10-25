@@ -123,7 +123,7 @@ const get = async (reviewId) => {
   let _review = null
 
   allRestaurants.forEach((restaurant) => {
-    restaurant.reviews.forEach((review, index) => {
+    restaurant.reviews.forEach((review) => {
       if(arrayEquals([...review._id.toString()], [...reviewId])) {
         _review = review
       }
@@ -195,6 +195,12 @@ const remove = async (reviewId) => {
 
   return newRestaurant
 }
+
+// const main = async () => {
+//   console.log(await get('6176eb86c69b0ba774e4d103'))
+// }
+
+// main()
 
 module.exports = {
   createReview: create,

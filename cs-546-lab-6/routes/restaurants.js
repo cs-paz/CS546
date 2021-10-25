@@ -78,6 +78,8 @@ const validate = async (
         return false
     }
   }
+
+  return true
 }
 
 router.get('/', async (req, res) => {
@@ -99,12 +101,10 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  console.log('req')
-  console.log([req])
   const data = req.body
 
   if(!validate(data.name , data.location , data.phoneNumber, data.website, data.priceRange, data.cuisines, data.serviceOptions)) {
-    res.status(400).send();
+    res.status(400).json({error: 'Invalid fields'});
   }
 
   try {
@@ -144,31 +144,26 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const data = req.body
 
-  if(!req.params.id || !ObjectID.isValid(req.params.id) || !validate(data.name , data.location , data.phoneNumber, data.website, data.priceRange, data.cuisines, data.serviceOptions)) {
-    res.status(400).send();
+  if(!validate(data.name , data.location , data.phoneNumber, data.website, data.priceRange, data.cuisines, data.serviceOptions)) {
+    res.status(400).json({error: 'Invalid fields'});
   }
-  // do more error checking for whole schema
 
   try {
-    let restaurant = null
-    try {
-      restaurant = await update(
-        data.id,
-        data.name,
-        data.location, 
-        data.phoneNumber,
-        data.website,
-        data.priceRange,
-        data.cuisines,
-        data.serviceOptions
-      )
-    } catch(e) {
-      res.status(404).send();
-    }
-    res.json(restaurant)
+    const restaurant = await update(
+      req.params.id,
+      data.name,
+      data.location, 
+      data.phoneNumber,
+      data.website,
+      data.priceRange,
+      data.cuisines,
+      data.serviceOptions
+    )
+    res.json(restaurant);
     res.status(200).send()
   }
-  catch(e) {
+  catch (e) {
+    // Something went wrong with the server!
     res.status(500).send();
   }
 })

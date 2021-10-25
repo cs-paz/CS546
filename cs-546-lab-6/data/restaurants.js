@@ -2,6 +2,11 @@ const { restaurants } = require("../config/mongoCollections")
 const connection = require("../config/mongoConnection")
 const ObjectID = require("mongodb").ObjectID
 
+const closeDB = async () => {
+  const db = await connection()
+  await db.serverConfig.close()
+}
+
 const validatePhoneNumber = (phoneNumber) => {
   phoneNumberArr = [...phoneNumber]
   if(phoneNumberArr[3] !== '-' && phoneNumberArr[7] !== '-' ) {
@@ -96,6 +101,8 @@ const create = async (
     const id = insertInfo.insertedId
     const _restaurant = await get(id)
 
+    // await closeDB()
+
     return _restaurant
 }
 
@@ -103,6 +110,8 @@ const getAll = async () => {
   const restaurantsCollection = await restaurants()
 
   const allRestaurants = await restaurantsCollection.find({}).toArray()
+
+  // await closeDB()
 
   return allRestaurants
 }
@@ -118,6 +127,8 @@ const get = async (id) => {
   if(!_restaurant || _restaurant === null) {
     throw new Error('Restaurant not found.')
   }
+
+  // await closeDB()
 
   return _restaurant
 }
@@ -140,6 +151,8 @@ const remove = async (id) => {
   if(deletionInfo.deletedCount === 0) {
     throw new Error(`Could not delete restaurant with id ${id}`)
   }
+
+  // await closeDB()
 
   return `${_restaurant.name} has been successfully deleted!`
 
@@ -201,7 +214,9 @@ const update = async (id, name, location, phoneNumber, website, priceRange, cuis
     website: website,
     priceRange: priceRange,
     cuisines: cuisines,
-    serviceOptions: serviceOptions
+    serviceOptions: serviceOptions,
+    overallRating: 0,
+    reviews: []
   }
 
   const restaurantsCollection = await restaurants()
@@ -212,6 +227,8 @@ const update = async (id, name, location, phoneNumber, website, priceRange, cuis
   }
 
   const _updatedRestaurant = await get(id)
+
+  // await closeDB()
 
   return _updatedRestaurant
 }
@@ -229,13 +246,6 @@ const main = async () => {
 
   // return 0
 }
-
-main().catch(async (error) => {
-  console.log(error);
-
-  const db = await connection()
-  await db.serverConfig.close()
-});
 
 module.exports = {
   create,

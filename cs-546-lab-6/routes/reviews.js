@@ -49,7 +49,7 @@ router.get('/:id', async (req, res) => {
   try {
     let restaurant = null
     try { 
-      restaurant = await getAll(req.params.restaurantId); 
+      restaurant = await getAll(req.params.id); 
     }
     catch (e) {
       res.status(404).json({ message: 'not found!' });
