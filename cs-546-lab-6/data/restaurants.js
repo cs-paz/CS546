@@ -32,18 +32,17 @@ const create = async (
   website,
   priceRange,
   cuisines,
-  overallRating,
-  serviceOptions
+  serviceOptions,
   ) => {
     if(!name || !location || !phoneNumber || !website || !priceRange 
-      || !cuisines || !overallRating || !serviceOptions) {
+      || !cuisines || !serviceOptions) {
         throw new Error('All fields need to have valid values')
     }
 
     if(typeof name !== 'string' || typeof location !== 'string' || typeof phoneNumber !== 'string' || 
       typeof website !== 'string' || typeof priceRange !== 'string') {
         throw new Error('Name, location, phonenumber, website, and priceRange must all be strings.')
-      }
+    }
     
     validatePhoneNumber(phoneNumber)
     validateWebsite(website)
@@ -82,8 +81,9 @@ const create = async (
       website,
       priceRange,
       cuisines,
-      overallRating,
-      serviceOptions
+      overallRating: 0,
+      serviceOptions,
+      reviews: []
     }
     
     const restaurantsCollection = await restaurants()
@@ -131,7 +131,7 @@ const remove = async (id) => {
   try {
     _restaurant = await get(id)
   } catch {
-    
+    throw new Error('restaurant not found.')
   }
 
   const restaurantsCollection = await restaurants()
@@ -145,27 +145,63 @@ const remove = async (id) => {
 
 }
 
-const rename = async (id, newWebsite) => {
+const update = async (id, name, location, phoneNumber, website, priceRange, cuisines, serviceOptions) => {
   if(!id || (typeof id !== 'string' && !ObjectID.isValid(id))) {
     throw new Error('Invalid ID.')
   }
 
-  if(!newWebsite) {
-    throw new Error('Invalid Webiste')
+  if(!name || !location || !phoneNumber || !website || !priceRange 
+    || !cuisines || !serviceOptions) {
+      throw new Error('All fields need to have valid values')
   }
 
-  validateWebsite(newWebsite)
+  if(typeof name !== 'string' || typeof location !== 'string' || typeof phoneNumber !== 'string' || 
+    typeof website !== 'string' || typeof priceRange !== 'string') {
+      throw new Error('Name, location, phonenumber, website, and priceRange must all be strings.')
+  }
+  
+  validatePhoneNumber(phoneNumber)
+  validateWebsite(website)
+
+  if(priceRange !== '$' && priceRange !== '$$' && priceRange !== '$$$' && priceRange !== '$$$$') {
+    throw new Error('Invalid price range.')
+  }
+
+  if(typeof cuisines !== "object" || cuisines.length < 1 || !Array.isArray(cuisines)) {
+    throw new Error('Invalid cuisine.')
+  }
+  else {
+    let hasOneValidString = false
+    cuisines.forEach((cuisine) => {
+      hasOneValidString = typeof cuisine === "string"
+    })
+    if(!hasOneValidString) {
+      throw new Error('Invalid cuisine.')
+    }
+  }
+  
+  if(typeof serviceOptions !== "object") {
+    throw new Error('Invalid service options.')
+  }
+  else {
+    if(typeof serviceOptions.dineIn !== 'boolean' || typeof serviceOptions.takeOut !== 'boolean' || 
+      typeof serviceOptions.delivery !== 'boolean') {
+        throw new Error('Invalid service options.')
+    }
+  }
 
   // will error if does not exist
   const _restaurant = await get(id)
 
-  if(newWebsite === _restaurant.website) {
-    throw new Error('Website must be different.')
-  }
-
   const updatedRestaurantObj = {
     ..._restaurant,
-    website: newWebsite
+    name: name,
+    location: location,
+    phoneNumber: phoneNumber,
+    website: website,
+    priceRange: priceRange,
+    cuisines: cuisines,
+    serviceOptions: serviceOptions
   }
 
   const restaurantsCollection = await restaurants()
@@ -206,5 +242,5 @@ module.exports = {
   get,
   getAll,
   remove,
-  rename,
+  update,
 }
