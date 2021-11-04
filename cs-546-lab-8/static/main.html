@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Character Finder</title>
+  </head>
+  <body>
+    <!-- <header>
+      <nav>
+        <ul>
+          <li><a href="./index.html">About</a></li>
+          <li><a href="./education.html">Education</a></li>
+          <li><a href="./story.html">Story</a></li>
+        </ul>
+      </nav>
+    </header> -->
+    <h1>Character Finder</h1>    
+    <main>
+      <p>
+        This site allows you to search Marvel's API.  
+        You can search by either entering search string in the form or by the character's ID.
+        To search by character ID, you must visit http://localhost:3000/characters/{id}
+      </p>
+      <form action="/search" method="POST">
+        <label for="search">Search</label>
+        <input type="text" id="search" name="searchTerm">
+        <input type="submit" id="submit">
+      </form>
+    </main>
+  </body>
+</html>
