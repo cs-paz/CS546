@@ -5,3 +5,43 @@
 .not-palindrome {
     color: #FF0000;
 }
+
+#formLabel {
+    display: block;
+}
+
+#phrase {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#submit {
+    display: block;
+    padding: 20px 68px;
+}
+
+#attempts {
+    font-size: 1.2em;
+}
+
+#palendromeForm {
+    font-size: 1.2em;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+footer > p {
+    font-size: 0.8em;
+    line-height: 0.5em;
+}
+
+header > h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#error {
+    display: none;
+}

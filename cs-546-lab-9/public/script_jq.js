@@ -13,11 +13,10 @@ $('#palendromeForm').submit((event) => {
 
     event.preventDefault();
     const str = $('#phrase').val().trim();
-    if (str) {
-      const modifiedStr = str.replace(/\W/g, '').toLowerCase();
+    const modifiedStr = str.replace(/\W/g, '').toLowerCase();
+    if (modifiedStr && modifiedStr.length != 0) {
 
-      // $('#error').hide();
-      // $('#formLabel').removeClass('error');
+      $('#error').hide();
       $('#phrase').removeClass('inputClass');
       const li = `<li class="${isPalendrome(modifiedStr) ? "is-palindrome" : "not-palindrome"}">${str}</li>`;
       $('#attempts').append(li);
@@ -25,11 +24,8 @@ $('#palendromeForm').submit((event) => {
       $('#phrase').focus();
     } 
     else {
-      // $('#error').show();
-      // $('#error').html('You must enter an input value');
-      $('#formLabel').addClass('error');
-      $('#phrase').addClass('inputClass');
-          $('#phrase').focus();
-          $('#phrase').value= "";
+      $('#error').show();
+      $('#phrase').focus();
+      $('#phrase').val("");
     }
   });
