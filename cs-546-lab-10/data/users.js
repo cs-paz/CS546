@@ -37,11 +37,29 @@ const validation = (username, password) => {
 const createUser = async (username, password) => {
     validation(username, password)
 
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-        // store hashed password in mongo
+    const lowerCasedUsername = username.toLowerCase()
+
+    bcrypt.hash(password, saltRounds, async (err, hash) => {
+
+        if(err) {
+            throw new Error('Error creating hash.')
+        }
+
+        const newUser = {
+            username: lowerCasedUsername,
+            password: hash
+        }
+
+        const usersCollection = await users()
+        const insertInfo = await usersCollection.insertOne(newUser)
+
+        if(insertInfo.insertedCount === 0) {
+            throw new Error('Unable to add new user.')
+        }
+
     })
 
-    const lowerCasedUsername = username.toLowerCase()
+    return { userInserted: true }
 
 }
 
@@ -50,23 +68,31 @@ const checkUser = async (username, password) => {
 
     const lowerCasedUsername = username.toLowerCase()
 
-    // get hashed password from mongo
+    const usersCollection = await users()
+    const user = await usersCollection.findOne({username: lowerCasedUsername})
 
-    bcrypt.compare(password, hash, function(err, result) {
-        
-    })
+    console.log(user)
 
+    hash = user.password
+
+    const passwordMatches = await bcrypt.compare(password, hash)
+
+    if(!passwordMatches) {
+        throw new Error('Either the username or password is invalid')
+    }
 
     return { authenticated: true }
 }
 
+const main = async () => {
+    // await createUser("cszablewskipaz", "password")
+    // console.log(await checkUser("cszablewskipaz", "password"))
 
-// const restaurantsCollection = await restaurants()
-//     const insertInfo = await restaurantsCollection.insertOne(newRestaurant)
+}
 
-//     if(insertInfo.insertedCount === 0) {
-//       throw new Error('Unable to add new restaurant.')
-//     }
+// main()
 
-//     const id = insertInfo.insertedId
-//     const _restaurant = await get(id)
+module.exports = {
+    createUser,
+    checkUser
+}
