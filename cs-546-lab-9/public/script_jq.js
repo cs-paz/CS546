@@ -15,7 +15,6 @@ $('#palendromeForm').submit((event) => {
     const str = $('#phrase').val().trim();
     const modifiedStr = str.replace(/\W/g, '').toLowerCase();
     if (modifiedStr && modifiedStr.length != 0) {
-
       $('#error').hide();
       $('#phrase').removeClass('inputClass');
       const li = `<li class="${isPalendrome(modifiedStr) ? "is-palindrome" : "not-palindrome"}">${str}</li>`;
