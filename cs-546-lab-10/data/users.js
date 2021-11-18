@@ -60,7 +60,6 @@ const createUser = async (username, password) => {
     })
 
     return { userInserted: true }
-
 }
 
 const checkUser = async (username, password) => {
@@ -87,7 +86,6 @@ const checkUser = async (username, password) => {
 const main = async () => {
     // await createUser("cszablewskipaz", "password")
     // console.log(await checkUser("cszablewskipaz", "password"))
-
 }
 
 // main()

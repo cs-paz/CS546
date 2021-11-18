@@ -1,6 +1,7 @@
 const express = require("express")
 const app = express()
 const configRoutes = require('./routes')
+const static = express.static(__dirname + '/public')
 const session = require('express-session')
 const exphbs = require('express-handlebars')
 const port = 3000
@@ -9,7 +10,7 @@ app.use(express.json())
 
 app.use(
   session({
-    name: 'lab10session',
+    name: 'AuthCookie',
     secret: "This is a secret.. shhh don't tell anyone",
     saveUninitialized: true,
     resave: false,
