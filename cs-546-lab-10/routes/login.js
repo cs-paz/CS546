@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
 
     try {
         await checkUser(username, password)
-        req.session.user = {username: username.toLowerCase(), password }
+        req.session.user = { username: username.toLowerCase() }
     } catch(e) {
         res.render('login', {
             error: e

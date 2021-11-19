@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     try {
         const { userInserted } = await createUser(username, password)
         if(userInserted) {
-            req.session.user = { username: username.toLowerCase(), password }
+            res.redirect('/')
         }
         else {
             res.render('signup', {
@@ -32,9 +32,7 @@ router.post('/', async (req, res) => {
         })
     }
     
-    if(req.session.user) {
-        res.redirect('/')
-    }
+    
 
 })
   

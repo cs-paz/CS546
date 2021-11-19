@@ -4,7 +4,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     if (!req.session.user) {
-        res.redirect('/login')
+        res.render('403')
     } else {
         res.render('private', {
             username: req.session.user.username
