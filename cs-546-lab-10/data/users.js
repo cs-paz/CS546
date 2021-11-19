@@ -70,8 +70,6 @@ const checkUser = async (username, password) => {
     const usersCollection = await users()
     const user = await usersCollection.findOne({username: lowerCasedUsername})
 
-    console.log(user)
-
     hash = user.password
 
     const passwordMatches = await bcrypt.compare(password, hash)

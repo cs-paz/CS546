@@ -25,6 +25,13 @@ app.use(express.urlencoded({ extended: true }))
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
+const logger = (req, res, next) => {
+  console.log(`[${new Date().toUTCString()}] ${req.method} ${req.originalUrl} ${req.session.user ? "(Authenticated User)" : "(Non-Authenticated User)"}`)
+  next()
+}
+
+app.use(logger)
+
 configRoutes(app)
 
 app.listen(port, () => {
