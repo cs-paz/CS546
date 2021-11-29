@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Maze API Application</title>
+    <link rel="stylesheet" href="public/styles.css">
+  </head>
+  <body>
+    <header>
+      <h1>Maze API Application</h1>
+    </header>
+    <main>
+
+      <div id="error">
+      </div>
+
+      <form id="searchForm">
+        Search for a show:
+        <label id="formLabel" for="search_term">
+          <input type="text" name="search_term" id="search_term"></input>
+          <button type="submit" id="submit">Submit</button>
+        </label>
+      </form>
+
+
+      <ul id="showList">
+      </ul>
+
+      <div id="show">
+      </div>
+
+      <a href="/" id="reloadLink">Back to All Shows</a>
+
+    </main>
+    <footer>
+      <p>Christian Szablewski-Paz</p>
+      <p>CWID 10445108</p>
+    </footer>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    >
+    </script>
+    <script src="public/script_jq.js"></script>
+
+  </body>
+</html>

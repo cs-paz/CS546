@@ -1,0 +1,52 @@
+#formLabel {
+    display: block;
+}
+
+#phrase {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#submit {
+    display: block;
+    padding: 20px 68px;
+}
+
+#searchForm {
+    font-size: 1.2em;
+}
+
+#search_term {
+    margin-bottom: 10px;
+}
+
+#showList {
+    display: none;
+}
+
+#show {
+    display: none;
+}
+
+#reloadLink {
+    display: none;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+footer > p {
+    font-size: 0.8em;
+    line-height: 0.5em;
+}
+
+header > h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#error {
+    display: none;
+    font-weight: bold;
+}
