@@ -16,17 +16,40 @@ $(document).ready(() => {
 
 $('#showList').on('click', 'li', (event) => {
   event.preventDefault();
+  $('#show').empty();
   const showUrl = $(event.target).attr('href');
   const requestConfig = {
     method: 'GET',
     url: showUrl
   };
   $.ajax(requestConfig).then((responseMessage) => {
-    console.log(responseMessage);
+    const show = responseMessage;
+    $('#showList').hide();
+    
+    const h1 = `<h1>${show.name}</h1>`;
+    const img = `<img src="${show.image?.medium? show.image.medium : "public/no_image.jpeg"}">`;
+    const genres = show.genres ? show.genres.map((genre) => {
+      return `<li>${genre}</li>`;
+    }) : `n/a`;
+    const genresWithoutCommas = genres.join(''); 
+    const dl = `
+      <dl>
+        <dt>Languages</dt>
+        <dd>${show.language? show.language : `n/a`}</dd>
+        <dt>Genres</dt>
+        <dd><ul>${genresWithoutCommas}</ul></dd>
+        <dt>Average Rating</dt>
+        <dd>${show.rating?.average? show.rating.average : `n/a`}</dd>
+        <dt>Network</dt>
+        <dd>${show.network?.name? show.network.name : `n/a`}</dd>
+        <dt>Summary</dt>
+        <dd>${show.summary? show.summary : `n/a`}</dd>
+      </dl>
+    `;
+    $('#show').append(h1, img, dl);
+    $('#show').show();
+    $('#reloadLink').show();
   });
-
-  $('#show').show();
-  $('#showList').hide();
 });
 
 $('#searchForm').submit((event) => {

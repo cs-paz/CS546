@@ -1,3 +1,7 @@
+dl > dd > ul {
+    padding-left: 0;
+}
+
 #formLabel {
     display: block;
 }
